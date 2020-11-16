@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users in database</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .fadeIn {
+            animation:3s ease 0s normal forwards 1 fadein;
+			-webkit-animation:3s ease 0s normal forwards 1 fadein;
+			opacity:1
+        }
+        @keyframes fadein{
+    0%{opacity:0}
+    80%{opacity:0}
+    100%{opacity:1}
+}
+
+@-webkit-keyframes fadein{
+    0%{opacity:0}
+    80%{opacity:0}
+    100%{opacity:1}
+}
+        .card {
+            display: inline-block;
+            margin: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            text-align: center;
+            font-family: arial;
+        }
+
+        .title {
+            color: grey;
+            font-size: 18px;
+        }
+
+        button {
+            border: none;
+            outline: 0;
+            display: inline-block;
+            padding: 8px;
+            color: white;
+            background-color: #000;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        a {
+            text-decoration: none;
+            font-size: 22px;
+            color: black;
+        }
+
+        button:hover,
+        a:hover {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+
+
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script defer src="https://www.gstatic.com/firebasejs/7.22.1/firebase-app.js"></script>
+
+
+    <!-- Add Firebase products that you want to use -->
+    <script defer src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/7.22.1/firebase-firestore.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/7.22.1/firebase-database.js"></script>
+    <script defer>
+        window.onload = () => {
+            var firebaseConfig = {
+                apiKey: "AIzaSyAFLhyuGZN6fqIBIyOQzY2L3UcyOqeiBQM",
+                authDomain: "quinquerie-d5842.firebaseapp.com",
+                databaseURL: "https://quinquerie-d5842.firebaseio.com",
+                projectId: "quinquerie-d5842",
+                storageBucket: "quinquerie-d5842.appspot.com",
+                messagingSenderId: "513247700797",
+                appId: "1:513247700797:web:250e7f6ebf84595ff90754",
+                measurementId: "G-0DM4GPBVWH"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+
+            let appElement = document.getElementById('app');
+
+            let usersInDb = firebase.database().ref('user/');
+            usersInDb.on('value', function (snapshot) {
+                appElement.innerHTML = "";
+                let data = snapshot.val();
+                let images = [
+                    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
+                    'https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+                    'https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=344&q=80',
+                    'https://images.unsplash.com/photo-1555952517-2e8e729e0b44?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=80'
+                ];
+                for(let key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        appElement.innerHTML += `
+                        <div class="card fadeIn">
+                            <img src="${images[Math.floor(Math.random() * images.length)]}" alt="John" style="width:100%">
+                            <h1>${data[key].first_name} ${data[key].last_name}</h1>
+                            <p class="title">${data[key].role}</p>
+                            <p>${data[key].email}</p>
+                            <div style="margin: 24px 0;">
+                                <a href="#"><i class="fa fa-dribbble"></i></a> 
+                                <a href="#"><i class="fa fa-twitter"></i></a>  
+                                <a href="#"><i class="fa fa-linkedin"></i></a>  
+                                <a href="#"><i class="fa fa-facebook"></i></a> 
+                            </div>
+                            <p><button>Contact</button></p>
+                            </div>
+                        `;
+                    }
+                }
+            });
+
+        }
+    </script>
+</body>
+
+</html>

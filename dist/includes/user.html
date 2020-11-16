@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User</title>
+</head>
+<body>
+    <form name="userForm" id="userForm">
+        <span>First name</span>
+        <input type="text" name="firstname">
+        <br><br>
+
+        <span>Last name</span>
+        <input type="text" name="lastname">
+        <br><br>
+
+        <span>Age</span>
+        <input type="date" name="age">
+        <br><br>
+
+        <span>Email</span>
+        <input type="email" name="email">
+        <br><br>
+
+        <span>Password</span>
+        <input type="password" name="password">
+        <br><br>
+
+        <input type="submit" value="Send">
+      </form>
+
+      <script>
+        window.onload = () => {
+          let form = document.getElementById('userForm');
+          form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            fetch('/api/user', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                first_name: form['firstname'].value,
+                last_name: form['lastname'].value,
+                age: form['age'].value,
+                email: form['email'].value,
+                password: form['password'].value,
+              })
+            })
+          })
+        }
+      </script>
+</body>
+</html>
